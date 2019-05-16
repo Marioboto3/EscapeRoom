@@ -1,10 +1,7 @@
 package edu.upc.dsa.services;
 
 
-import edu.upc.dsa.models.User;
-import edu.upc.dsa.models.UserLogin;
-import edu.upc.dsa.models.UserProfile;
-import edu.upc.dsa.models.UserStatics;
+import edu.upc.dsa.models.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -13,6 +10,8 @@ import io.swagger.annotations.ApiResponses;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.ArrayList;
+import java.util.List;
 
 @Api(value = "/user", description = "Endpoint to User Service")
 @Path("/user")
@@ -82,6 +81,34 @@ public class UserService {
     @Produces(MediaType.APPLICATION_JSON)
     public Response statics() {
         UserStatics user = new UserStatics(2,10,5,3);
+        return Response.status(201).entity(user).build();
+    }
+    @GET
+    @ApiOperation(value = "inventory", notes = "asdasd")
+    @ApiResponses(value = {
+            @ApiResponse(code = 201, message = "Successful", response = UserInventary.class),
+            @ApiResponse(code = 404, message = "User not found")
+    })
+    @Path("/inventory")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response inventory() {
+        String fusil = "fusildetambor";
+        String cluered = "cluered";
+        String clueyellow = "clueyellow";
+        String katana = "katana";
+        String keyred = "keyred";
+        String keyyellow = "keyyellow";
+
+        UserInventary user = new UserInventary();
+        List<String> lista = new ArrayList<>();
+        lista.add(fusil);
+        lista.add(cluered);
+        lista.add(clueyellow);
+        lista.add(katana);
+        lista.add(keyyellow);
+        lista.add(keyyellow);
+        lista.add(keyred);
+        user.setLista(lista);
         return Response.status(201).entity(user).build();
     }
 
