@@ -1,15 +1,15 @@
 package edu.upc.dsa.models;
 
-public class UserStatics {
+public class UserStatistics {
     private int enemigosmatados;
     private int minutostotales;
     private int monedasconseguidas;
     private int partidasjugadas;
 
-    public UserStatics() {
+    public UserStatistics() {
     }
 
-    public UserStatics(int enemigosmatados, int minutostotales, int monedasconseguidas, int partidasjugadas) {
+    public UserStatistics(int enemigosmatados, int minutostotales, int monedasconseguidas, int partidasjugadas) {
         this.enemigosmatados = enemigosmatados;
         this.minutostotales = minutostotales;
         this.monedasconseguidas = monedasconseguidas;

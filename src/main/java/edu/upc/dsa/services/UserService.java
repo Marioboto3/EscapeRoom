@@ -74,13 +74,13 @@ public class UserService {
     @GET
     @ApiOperation(value = "statics", notes = "asdasd")
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Successful", response = UserStatics.class),
+            @ApiResponse(code = 201, message = "Successful", response = UserStatistics.class),
             @ApiResponse(code = 404, message = "User not found")
     })
-    @Path("/statics")
+    @Path("/statistics")
     @Produces(MediaType.APPLICATION_JSON)
     public Response statics() {
-        UserStatics user = new UserStatics(2,10,5,3);
+        UserStatistics user = new UserStatistics(2,10,5,3);
         return Response.status(201).entity(user).build();
     }
     @GET
@@ -110,6 +110,36 @@ public class UserService {
         lista.add(keyred);
         user.setLista(lista);
         return Response.status(201).entity(user).build();
+    }
+    @GET
+    @ApiOperation(value = "inventoryHome", notes = "asdasd")
+    @ApiResponses(value = {
+            @ApiResponse(code = 201, message = "Successful", response = UserInventary.class),
+            @ApiResponse(code = 404, message = "User not found")
+    })
+    @Path("/inventoryHome")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response inventoryHome() {
+        String fusil = "fusil";
+        String katana = "katana";
+        UserInventary user = new UserInventary();
+        List<String> lista = new ArrayList<>();
+        lista.add(fusil);
+        lista.add(katana);
+        user.setLista(lista);
+        return Response.status(201).entity(user).build();
+    }
+    @POST
+    @ApiOperation(value = "Buy", notes = "asdasd")
+    @ApiResponses(value = {
+            @ApiResponse(code = 201, message = "Successful"),
+            @ApiResponse(code = 500, message = "Validation Error")
+
+    })
+    @Path("/buy")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response buy(String id) {
+            return Response.status(201).entity("oumama").build();
     }
 
 }

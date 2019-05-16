@@ -36,9 +36,7 @@
     </div>
 </nav>
 
-<div class="jumbotron text-center">
-    <h1>EscapeRoom</h1>
-    <p>Escape if you can USERNAME!</p>
+<div id="titulo" class="jumbotron text-center">
 </div>
 <div id="about" class="container-fluid">
     <div class="row">
@@ -55,8 +53,8 @@
         <div class="col-sm-2">
         </div>
         <div class="col-sm-3 bg-grey">
-            <h2 class="text-white">Game Statics</h2>
-            <table id= "statics_tabla"class="table table-hover ">
+            <h2 class="text-white">Game Statistics</h2>
+            <table id= "statistics_tabla"class="table table-hover ">
                 <tbody>
                 </tbody>
             </table>
@@ -96,19 +94,17 @@
     <div class="row slideanim">
     <div class="col-sm-4 center">
         <button type="button" class="btn btn-primary" data-toggle="popover1" data-placement="bottom" title="Coste: 125$" data-content="Daño: 50">INFO</button>
-        <button type="button" class="btn btn-buya">BUY</button>
+        <button id="fusil" type="button" class="btn btn-buya" onclick="buy(this.id);myfunction(id)">BUY</button>
     </div>
-
-    <div class="col-sm-4 center">
+        <div class="col-sm-4 center">
         <button type="button" class="btn btn-primary" data-toggle="popover1" data-placement="bottom" title="Coste: 125$" data-content="Daño: 50">INFO</button>
-        <button type="button" class="btn btn-buya">BUY</button>
+        <button id=corredera" type="button" class="btn btn-buya" onclick="buy(this.id);myfunction(id)">BUY</button>
     </div>
-
-    <div class="col-sm-4 center">
+    <div class= "col-sm-4 center">
         <button type="button" class="btn btn-primary" data-toggle="popover1" data-placement="bottom" title="Coste: 125$" data-content="Daño: 50">INFO</button>
-        <button type="button" class="btn btn-buya">BUY</button>
+        <button id="katana" type="button" class="btn btn-buya" onclick="buy(this.id);myfunction(id)">BUY</button>
     </div>
-</div>
+    </div>
     <div class="row slideanim">
         <p></p>
     </div>
@@ -142,17 +138,17 @@
     <div class="row slideanim">
         <div class="col-sm-4 center">
             <button type="button" class="btn btn-primary" data-toggle="popover1" data-placement="bottom" title="Pista EASY" data-content="Dato historico">INFO</button>
-            <button type="button" class="btn btn-buya">BUY</button>
+            <button #id="clueyellow" type="button" class="btn btn-buya" onclick="buy(this.id)">BUY</button>
         </div>
 
         <div class="col-sm-4 center">
             <button type="button" class="btn btn-primary" data-toggle="popover1" data-placement="bottom" title="Pista MEDIUM" data-content="Primera letra">INFO</button>
-            <button type="button" class="btn btn-buya">BUY</button>
+            <button #id="buy_clueblue"type="button" class="btn btn-buya" onclick="buy(this.id)">BUY</button>
         </div>
 
         <div class="col-sm-4 center">
             <button type="button" class="btn btn-primary" data-toggle="popover1" data-placement="bottom" title="Pista HARD" data-content="Te dice el nombre">INFO</button>
-            <button type="button" class="btn btn-buya">BUY</button>
+            <button #id="buy_cluered"type="button" class="btn btn-buya" onclick="buy(this.id)">BUY</button>
         </div>
     </div>
     <h4>KEYS</h4>
@@ -169,10 +165,10 @@
     </div>
     <div class="row slideanim">
         <div class="col-sm-4">
-            <img src="https://scontent-mad1-1.xx.fbcdn.net/v/t1.0-9/59904610_2381158021936904_3630824489995993088_n.jpg?_nc_cat=105&_nc_ht=scontent-mad1-1.xx&oh=b09ac4773b91ee855ae246c60469be4e&oe=5D2FAC40" alt="Guerrera" width="350" height="125">
+            <img src="https://scontent-mad1-1.xx.fbcdn.net/v/t1.0-9/59627072_2381151755270864_7056317532851929088_n.jpg?_nc_cat=111&_nc_ht=scontent-mad1-1.xx&oh=2b3a0a634a078c0fdd3e487fccfac39d&oe=5D5EBFF3" alt="Guerrera" width="350" height="125">
         </div>
         <div class="col-sm-4">
-            <img src="https://scontent-mad1-1.xx.fbcdn.net/v/t1.0-9/59627072_2381151755270864_7056317532851929088_n.jpg?_nc_cat=111&_nc_ht=scontent-mad1-1.xx&oh=2b3a0a634a078c0fdd3e487fccfac39d&oe=5D5EBFF3" alt="Guerrera" width="350" height="125">
+            <img src="https://scontent-mad1-1.xx.fbcdn.net/v/t1.0-9/59904610_2381158021936904_3630824489995993088_n.jpg?_nc_cat=105&_nc_ht=scontent-mad1-1.xx&oh=b09ac4773b91ee855ae246c60469be4e&oe=5D2FAC40" alt="Guerrera" width="350" height="125">
         </div>
         <div class="col-sm-4">
             <img src="https://scontent-mad1-1.xx.fbcdn.net/v/t1.0-9/60104433_2381144115271628_7427805772727189504_n.jpg?_nc_cat=103&_nc_ht=scontent-mad1-1.xx&oh=ea2c6e453da7810df10e08054d6b06f3&oe=5D68709D" alt="Guerrera" width="350" height="125">
@@ -180,21 +176,33 @@
     </div>
     <div class="row slideanim">
         <div class="col-sm-4 center">
-            <button type="button" class="btn btn-buya">BUY</button>
+            <button type="button" class="btn btn-primary" data-toggle="popover1" data-placement="bottom" title="Abre la puerta... " data-content="AMARILLA">INFO</button>
+            <button #id="buy_keyyellow" type="button" class="btn btn-buya" onclick="buy(this.id)">BUY</button>
         </div>
-
         <div class="col-sm-4 center">
-            <button type="button" class="btn btn-buya">BUY</button>
+            <button type="button" class="btn btn-primary" data-toggle="popover1" data-placement="bottom" title="Abre la puerta... " data-content="AZUL">INFO</button>
+            <button #id="buy_keyblue" type="button" class="btn btn-buya" onclick="buy(this.id)">BUY</button>
         </div>
-
         <div class="col-sm-4 center">
-            <button type="button" class="btn btn-buya">BUY</button>
+            <button type="button" class="btn btn-primary" data-toggle="popover1" data-placement="bottom" title="Abre la puerta... " data-content="ROJA">INFO</button>
+            <button #id="buy_keyred" type="button" class="btn btn-buya" onclick="buy(this.id)">BUY</button>
         </div>
     </div>
     <br><br>
 </div>
 <div id="inventory" class="container-fluid text-center ">
-    <button class="btn btn-default" id="inventory_button">Accede</button>
+    <div class="col-sm-4 center">
+        <img src="https://cdn.pixabay.com/photo/2012/04/05/02/02/arrow-25894_960_720.png" alt="Guerrera" width="300" height="125">
+    </div>
+    <div class="col-sm-4 center">
+        <h1>INVENTORY</h1>
+        <button class="btn btn-default" id="inventory_button">Accede</button>
+    </div>
+    <div class="col-sm-4 center">
+        <img src="https://scontent-mad1-1.xx.fbcdn.net/v/t1.0-9/60838078_2396244560428250_7852943999579979776_n.jpg?_nc_cat=105&_nc_ht=scontent-mad1-1.xx&oh=46ad35d2b5918c5b28fea01318033118&oe=5D677533" alt="Guerrera" width="150" height="175">
+
+    </div>
+
 </div>
 
 <footer class="container-fluid text-center">

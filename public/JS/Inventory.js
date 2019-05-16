@@ -7,6 +7,11 @@ var contcluered=0;
 var contkeyyellow=0;
 var contkeyblue=0;
 var contkeyred=0;
+
+function volver(id)
+{ console.log("id",id);
+    location.href = "http://localhost:8080/Home.html";
+}
 $(document).ready(function() {
     // Add smooth scrolling to all links in navbar + footer link
     $(".navbar a, footer a[href='#myPage']").on('click', function (event) {
@@ -228,4 +233,5 @@ $(document).ready(function() {
             contkeyred=0;
         }
     }, "json");
+
 });

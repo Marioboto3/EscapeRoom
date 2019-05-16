@@ -1,3 +1,33 @@
+var BASE_URI = "http://localhost:8080/dsaApp";
+
+function myfunction(id) {
+    console.log("id:",id);
+    var btn = document.getElementById(id);
+    btn.innerHTML='<button id=id type="button" class="btn btn-buya" onclick="buy(this.id);myfunction(id)" disabled>BUY</button>';
+}
+function buy(id){
+    console.log("ou mama");
+    $.ajax({
+        type: 'POST',
+        url: BASE_URI.concat("/user/buy"),
+        contentType: "application/json",
+        data: JSON.stringify(id.toString()),
+        dataType: 'json',
+        success: function (data) {
+            console.log("Log in succesfully");
+            console.log(data);
+            console.log(url);
+        },
+        error: function (error) {
+            console.log("error'''''':", error);
+        }
+    });
+}
+function titulo(){
+    var container = document.getElementById("titulo");
+    container.innerHTML='<h1>EscapeRoom</h1>'+'<p>Escapa si puedes Mario</p>';
+}
+
 $(document).ready(function(){
     $('[data-toggle="popover"]').popover();
     $('[data-toggle="popover1"]').popover();
@@ -37,6 +67,7 @@ $(document).ready(function(){
     $("#inventory_button").click(function () {
         location.href = "http://localhost:8080/Inventory.html";
     })
+    titulo();
     $.get("http://localhost:8080/dsaApp/user/profile", function (data) {
         var username = data.username;
         var password = data.password;
@@ -54,7 +85,7 @@ $(document).ready(function(){
         var insertion = "<tr><td>" + username_text + "</td><td>" + username + "</td></tr><tr><td>" + password_text + "</td><td>" + password + "</td></tr><tr><td>" + name_text+"</td>><td>" + name + "</td></tr><tr><td>" + surname_text + "</td><td>" + surname + "</td></tr><tr><td>" + mail_text + "</td><td>" + mail + "</td></tr><tr><td>" + age_text + "</td><td>" + age + "</td></tr>";
         $("#mytabla tbody").append(insertion);
 }, "json");
-    $.get("http://localhost:8080/dsaApp/user/statics", function (data) {
+    $.get("http://localhost:8080/dsaApp/user/statistics", function (data) {
         var partidasjugadas = data.partidasjugadas;
         var enemigosmatados = data.enemigosmatados;
         var monedasconseguidas = data.monedasconseguidas;
@@ -63,10 +94,15 @@ $(document).ready(function(){
         var enemigosmatados_text = "Enemigos asesinados";
         var monedasconseguidas_text = "Monedas conseguidas";
         var tiempototal_text = "Tiempo total";
-        var mail_text ="mail";
-        var age_text ="age";
         console.log("Profile:",data);
         var insertion = "<tr><td>" + partidasjugadas_text + "</td><td>" + partidasjugadas + "</td></tr><tr><td>" + tiempototal_text + "</td><td>" + tiempototal + "</td></tr><tr><td>" + enemigosmatados_text +"</td>><td>" + enemigosmatados + "</td></tr><tr><td>" + monedasconseguidas_text + "</td><td>" + monedasconseguidas + "</td></tr>";
-        $("#statics_tabla tbody").append(insertion);
+        $("#statistics_tabla tbody").append(insertion);
+    }, "json");
+    $.get("http://localhost:8080/dsaApp/user/inventoryHome", function (data) {
+        console.log("Data:",data);
+        for (let i = 0; i<data.lista.length; i++)
+        {
+            myfunction(data.lista[i]);
+        }
     }, "json");
 })
