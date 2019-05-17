@@ -10,9 +10,6 @@ h2 {
     font-weight: 600;
     margin-bottom: 30px;
 }
-.col-sm-4-lila{
-    background-color: #470A82;
-}
 h4 {
     font-size: 19px;
     line-height: 1.375em;
@@ -147,7 +144,7 @@ footer .glyphicon {
     margin-bottom: 20px;
     color: #9852DA;
 }
-.slideanim {visibility:hidden;}
+.slideanim {}
 .slide {
     animation-name: slide;
     -webkit-animation-name: slide;
