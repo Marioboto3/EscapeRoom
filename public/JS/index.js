@@ -1,6 +1,11 @@
 var BASE_URI = "http://localhost:8080/dsaApp";
 
 
+function acceder(id)
+{ console.log("id",id);
+    location.href = "http://localhost:8080/login.html";
+}
+
 $(document).ready(function() {
     // Add smooth scrolling to all links in navbar + footer link
     $(".navbar a, footer a[href='#myPage']").on('click', function (event) {
@@ -33,36 +38,5 @@ $(document).ready(function() {
             }
         });
     });
-
-    console.log("LOOOOOOGIN!!!!");
-    $("#login_button").click(function () {
-
-        var username = $("#username").val();
-        console.log(username);
-        var password = $("#password").val();
-        console.log(password);
-        console.log("Estoy en login script");
-        //Create the object that we want to pass, which is user
-        var user = {
-            "username": "mario",
-            "password": "mario",
-        };
-        console.log("****** USER !!!!!!! ", user);
-        console.log(JSON.stringify(user));
-        $.ajax({
-            type: 'POST',
-            url: BASE_URI.concat("/user/login"),
-            contentType: "application/json",
-            data: JSON.stringify(user),
-            dataType: 'json',
-            success: function (data) {
-                console.log("Log in succesfully");
-                console.log(data);
-                console.log(url);
-            },
-            error: function (error) {
-                console.log("error'''''':", error);
-            }
-        });
-    })
+    console.log("Me cago en todo")
 });

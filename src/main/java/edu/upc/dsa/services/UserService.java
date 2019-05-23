@@ -1,6 +1,8 @@
 package edu.upc.dsa.services;
 
 
+import edu.upc.dsa.MockAPI;
+import edu.upc.dsa.MockAPIImpl;
 import edu.upc.dsa.models.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -18,46 +20,50 @@ import java.util.List;
 
 public class UserService {
 
-    public UserService(){
+    private MockAPI ma;
 
+    public UserService() throws Exception {
+        this.ma = MockAPIImpl.getInstance();
+        if (ma.sizeUsers() == 0) {
+            this.ma.addUserLogin("admin", "admin");
+            this.ma.addUserLogin("carlo", "carlo");
+            this.ma.addUser("Mario","Mario","Mario","San","mama",21,10,10,10,10);
+        }
     }
     @POST
-    @ApiOperation(value = "Login", notes = "asdasd")
+    @ApiOperation(value = "Mock Login", notes = "asdasd")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Successful"),
-            @ApiResponse(code = 500, message = "Validation Error")
-
+            @ApiResponse(code = 201, message = "Successful", response = UserLogin.class, responseContainer="List"),
+            @ApiResponse(code = 404, message = "User not found", responseContainer="List"),
+            @ApiResponse(code = 500, message = "Password not match", responseContainer="List")
     })
     @Path("/login")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response Login(UserLogin user) {
-        System.out.println("LOGIN "+user);
-        UserLogin userPrueba = new UserLogin("mario","mario");
-        if(user.getUsername().equals(userPrueba.getUsername())&& user.getPassword().equals(userPrueba.getPassword())){
-            System.out.println("LOGIN "+user);
-            String s = "{'result': 'OK'}";
-            return Response.status(200).entity(s).build();
-        }
-        else
+    public Response login(UserLogin user) {
+        try{
+            UserLogin u = this.ma.getUserLogin(user.getUsername(),user.getPassword());
+            return Response.status(201).entity(u).build();
+        }catch(UserNotFoundException e1){
+            return Response.status(404).build();
+        }catch(PasswordNotMatchException e2){
             return Response.status(500).build();
-
+        }
     }
     @POST
-    @ApiOperation(value = "Register", notes = "asdasd")
+    @ApiOperation(value = "Mock Register", notes = "asdasd")
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Successful"),
-            @ApiResponse(code = 500, message = "Validation Error")
-
+            @ApiResponse(code = 201, message = "Successful", response = User.class, responseContainer="List"),
+            @ApiResponse(code = 500, message = "Existant user", responseContainer="List")
     })
     @Path("/register")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response Register(UserProfile user) {
-        UserProfile userPrueba = new UserProfile("izan","izan","izan","izan","izan","21");
-        if(user.getUsername().equals(userPrueba.getUsername())&& user.getPassword().equals(userPrueba.getPassword()))
-            return Response.status(201).build();
-        else
+    public Response register(User user) {
+        try{
+            UserLogin u = this.ma.addUserLogin(user.getUsername(),user.getPassword());
+            return Response.status(201).entity(u).build();
+        }catch(ExistantUserException e1) {
             return Response.status(500).build();
-
+        }
     }
     @GET
     @ApiOperation(value = "profile", notes = "asdasd")
@@ -65,11 +71,15 @@ public class UserService {
             @ApiResponse(code = 201, message = "Successful", response = UserProfile.class),
             @ApiResponse(code = 404, message = "User not found")
     })
-    @Path("/profile")
+    @Path("/{username}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response profile() {
-        UserProfile user = new UserProfile("Marioboto3","contraseña","Mario","Sánchez","marioboto@gmail.com","21");
-     return Response.status(201).entity(user).build();
+    public Response profile(@PathParam("username") String username) {
+        try{
+            UserProfile userProfile = this.ma.getProfile(username);
+            return Response.status(201).entity(userProfile).build();
+        }catch(UserNotFoundException e1){
+            return Response.status(404).build();
+        }
     }
     @GET
     @ApiOperation(value = "statics", notes = "asdasd")
@@ -138,8 +148,8 @@ public class UserService {
     })
     @Path("/buy")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response buy(String id) {
-            return Response.status(201).entity("oumama").build();
+    public Response buy(Weapon weapon) {
+            return Response.status(201).entity(weapon).build();
     }
 
 }

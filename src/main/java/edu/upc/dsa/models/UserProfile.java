@@ -7,12 +7,12 @@ public class UserProfile {
     private String name;
     private String surname;
     private String mail;
-    private String age;
+    private int age;
 
     public UserProfile() {
     }
 
-    public UserProfile(String username, String password, String name, String surname, String mail, String age) {
+    public UserProfile(String username, String password, String name, String surname, String mail, int age) {
         this.username = username;
         this.password = password;
         this.name = name;
@@ -61,11 +61,11 @@ public class UserProfile {
         this.mail = mail;
     }
 
-    public String getAge() {
+    public int getAge() {
         return age;
     }
 
-    public void setAge(String age) {
+    public void setAge(int age) {
         this.age = age;
     }
 }

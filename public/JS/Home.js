@@ -1,27 +1,34 @@
 var BASE_URI = "http://localhost:8080/dsaApp";
 
 function myfunction(id) {
-    console.log("id:",id);
     var btn = document.getElementById(id);
     btn.innerHTML='<button id=id type="button" class="btn btn-buya" onclick="buy(this.id);myfunction(id)" disabled>BUY</button>';
 }
 function buy(id){
     console.log("ou mama");
-    $.ajax({
-        type: 'POST',
-        url: BASE_URI.concat("/user/buy"),
-        contentType: "application/json",
-        data: JSON.stringify(id.toString()),
-        dataType: 'json',
-        success: function (data) {
-            console.log("Log in succesfully");
-            console.log(data);
-            console.log(url);
-        },
-        error: function (error) {
-            console.log("error'''''':", error);
-        }
-    });
+    console.log(id,": puta id");
+        var myObj = {
+            nombre: id,
+        };
+        console.log(myObj,": Me cago en dios");
+        $.ajax({
+            type: 'POST',
+            url: '/dsaApp/user/buy',
+            data: JSON.stringify(myObj),
+            success: function(data) {
+                location.href = "http://localhost:8080/Inventory.html";
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                if(xhr.status===500){
+                    alert("Password not match");
+                }
+                else{
+                    alert("User not found");
+                }
+            },
+            contentType: "application/json",
+            dataType: 'json'
+        });
 }
 function titulo(){
     var container = document.getElementById("titulo");
