@@ -1,6 +1,8 @@
 package edu.upc.dsa;
 
-import edu.upc.dsa.models.*;
+import edu.upc.dsa.models.Exceptions.*;
+import edu.upc.dsa.models.Users.User;
+import edu.upc.dsa.models.Users.UserLogin;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -13,8 +15,9 @@ public class MockAPITest {
     public void setUp() throws Exception {
         this.ma = MockAPIImpl.getInstance();
 
-        this.ma.addUserLogin("admin", "admin");
-        this.ma.addUserLogin("carlo", "carlo");
+        this.ma.addUser("Carlo","Carlo","Carlo","Car","car",21);
+        this.ma.addUser("Mario","Mario","Mario","San","mama",21);
+
 
         this.ma.addObjectStore("keyRed");
     }
@@ -26,7 +29,7 @@ public class MockAPITest {
 
     @Test
     public void testAddUser() throws ExistantUserException {
-        this.ma.addUserLogin("mario", "mario");
+        this.ma.addUser("Peque","Peque","Peque","San","mama",21);
         Assert.assertEquals(3, this.ma.sizeUsers());
     }
 
@@ -43,7 +46,7 @@ public class MockAPITest {
 
     @Test(expected = ExistantUserException.class)
     public void testAddExistingUser() throws Exception {
-        this.ma.addUserLogin("carlo", "carlo");
+        this.ma.addUser("Mario","Mario","Mario","San","mama",21);
     }
 
     @Test(expected = PasswordNotMatchException.class)
@@ -51,14 +54,14 @@ public class MockAPITest {
         this.ma.getUser("carlo", "null");
     }
     @Test
-    public void testAddObjectToStore() throws ObjectExist{
+    public void testAddObjectToStore() throws ObjectExist {
         this.ma.addObjectStore("keyBlue");
         Assert.assertEquals(2, this.ma.sizeStore());
     }
     @Test
     public void testBuyObject() throws ObjectNotExist, UserNotFoundException,PasswordNotMatchException{
-        this.ma.buyObject("keyRed","carlo");
-        User user = this.ma.getUser("carlo","carlo");
+        this.ma.buyObject("keyRed","Carlo");
+        User user = this.ma.getUser("Carlo","Carlo");
         Assert.assertEquals(1,user.size());
 
     }

@@ -4,6 +4,11 @@ package edu.upc.dsa.services;
 import edu.upc.dsa.MockAPI;
 import edu.upc.dsa.MockAPIImpl;
 import edu.upc.dsa.models.*;
+import edu.upc.dsa.models.Exceptions.ExistantUserException;
+import edu.upc.dsa.models.Exceptions.ObjectNotExist;
+import edu.upc.dsa.models.Exceptions.PasswordNotMatchException;
+import edu.upc.dsa.models.Exceptions.UserNotFoundException;
+import edu.upc.dsa.models.Users.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -25,9 +30,11 @@ public class UserService {
     public UserService() throws Exception {
         this.ma = MockAPIImpl.getInstance();
         if (ma.sizeUsers() == 0) {
-            this.ma.addUserLogin("admin", "admin");
-            this.ma.addUserLogin("carlo", "carlo");
-            this.ma.addUser("Mario","Mario","Mario","San","mama",21,10,10,10,10);
+            this.ma.addUser("Carlo","Carlo","Carlo","Car","car",21);
+            this.ma.addUser("Mario","Mario","Mario","San","mama",21);
+            this.ma.addObjectStore("Katana");
+            this.ma.addObjectStore("Pistola");
+            this.ma.buyObject("Katana","Mario");
         }
     }
     @POST
@@ -52,14 +59,14 @@ public class UserService {
     @POST
     @ApiOperation(value = "Mock Register", notes = "asdasd")
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Successful", response = User.class, responseContainer="List"),
+            @ApiResponse(code = 201, message = "Successful", response = UserProfile.class, responseContainer="List"),
             @ApiResponse(code = 500, message = "Existant user", responseContainer="List")
     })
     @Path("/register")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response register(User user) {
+    public Response register(UserProfile user) {
         try{
-            UserLogin u = this.ma.addUserLogin(user.getUsername(),user.getPassword());
+            User u = this.ma.addUser(user.getUsername(),user.getPassword(),user.getName(),user.getSurname(),user.getMail(),user.getAge());
             return Response.status(201).entity(u).build();
         }catch(ExistantUserException e1) {
             return Response.status(500).build();
@@ -71,7 +78,7 @@ public class UserService {
             @ApiResponse(code = 201, message = "Successful", response = UserProfile.class),
             @ApiResponse(code = 404, message = "User not found")
     })
-    @Path("/{username}")
+    @Path("/{username}/profile")
     @Produces(MediaType.APPLICATION_JSON)
     public Response profile(@PathParam("username") String username) {
         try{
@@ -82,16 +89,20 @@ public class UserService {
         }
     }
     @GET
-    @ApiOperation(value = "statics", notes = "asdasd")
+    @ApiOperation(value = "statistics", notes = "asdasd")
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "Successful", response = UserStatistics.class),
             @ApiResponse(code = 404, message = "User not found")
     })
-    @Path("/statistics")
+    @Path("/{username}/statistics")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response statics() {
-        UserStatistics user = new UserStatistics(2,10,5,3);
-        return Response.status(201).entity(user).build();
+    public Response statistics(@PathParam("username") String username) {
+        try{
+            UserStatistics userStatistics = this.ma.getStatistics(username);
+            return Response.status(201).entity(userStatistics).build();
+        }catch(UserNotFoundException e1){
+            return Response.status(404).build();
+        }
     }
     @GET
     @ApiOperation(value = "inventory", notes = "asdasd")
@@ -99,57 +110,36 @@ public class UserService {
             @ApiResponse(code = 201, message = "Successful", response = UserInventary.class),
             @ApiResponse(code = 404, message = "User not found")
     })
-    @Path("/inventory")
+    @Path("/inventory/{username}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response inventory() {
-        String fusil = "fusildetambor";
-        String cluered = "cluered";
-        String clueyellow = "clueyellow";
-        String katana = "katana";
-        String keyred = "keyred";
-        String keyyellow = "keyyellow";
+    public Response inventory(@PathParam("username") String username){
+        try {
+            UserInventary userInventary = this.ma.getInventary(username);
+            return Response.status(201).entity(userInventary).build();
+        }catch (UserNotFoundException e1){
+            return Response.status(404).build();
+        }
+    }
 
-        UserInventary user = new UserInventary();
-        List<String> lista = new ArrayList<>();
-        lista.add(fusil);
-        lista.add(cluered);
-        lista.add(clueyellow);
-        lista.add(katana);
-        lista.add(keyyellow);
-        lista.add(keyyellow);
-        lista.add(keyred);
-        user.setLista(lista);
-        return Response.status(201).entity(user).build();
-    }
-    @GET
-    @ApiOperation(value = "inventoryHome", notes = "asdasd")
-    @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Successful", response = UserInventary.class),
-            @ApiResponse(code = 404, message = "User not found")
-    })
-    @Path("/inventoryHome")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response inventoryHome() {
-        String fusil = "fusil";
-        String katana = "katana";
-        UserInventary user = new UserInventary();
-        List<String> lista = new ArrayList<>();
-        lista.add(fusil);
-        lista.add(katana);
-        user.setLista(lista);
-        return Response.status(201).entity(user).build();
-    }
     @POST
     @ApiOperation(value = "Buy", notes = "asdasd")
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "Successful"),
-            @ApiResponse(code = 500, message = "Validation Error")
+            @ApiResponse(code = 404, message = "User not found"),
+            @ApiResponse(code = 500, message = "Object not found")
 
     })
-    @Path("/buy")
+    @Path("/buy/{username}")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response buy(Weapon weapon) {
-            return Response.status(201).entity(weapon).build();
+    public Response buy(ObjTO objTO, @PathParam("username") String username) {
+        try{
+            this.ma.buyObject(objTO.getNombre(),username);
+            return Response.status(201).build();
+        }catch(ObjectNotExist e1) {
+            return Response.status(500).build();
+        }catch (UserNotFoundException e2) {
+            return Response.status(404).build();
+        }
     }
 
 }

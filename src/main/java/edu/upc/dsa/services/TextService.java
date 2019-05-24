@@ -40,7 +40,7 @@ public class TextService {
     @GET
     @Produces(MediaType.TEXT_PLAIN)
     public String throwIt() throws Exception {
-        throw new Exception("My Exception");
+        throw new Exception("My Exceptions");
     }
 
 }

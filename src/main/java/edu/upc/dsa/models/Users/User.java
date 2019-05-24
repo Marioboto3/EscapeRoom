@@ -1,4 +1,6 @@
-package edu.upc.dsa.models;
+package edu.upc.dsa.models.Users;
+
+import edu.upc.dsa.models.ObjTO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,17 +14,27 @@ public class User {
     private String surname;
     private String mail;
     private int age;
-    private List<Obj> listObjetos;
+    private List<ObjTO> listObjetos;
     private int enemigosmatados;
     private int minutostotales;
     private int monedasconseguidas;
     private int partidasjugadas;
 
     public User() {
-        this.listObjetos = new ArrayList<Obj>();
+        this.listObjetos = new ArrayList<ObjTO>();
     }
 
-    public User(String username, String password, String name, String surname, String mail, int age, List<Obj> listObjetos, int enemigosmatados, int minutostotales, int monedasconseguidas, int partidasjugadas) {
+    public User(String username, String password, String name, String surname, String mail, int age){
+        this.username = username;
+        this.password = password;
+        this.name = name;
+        this.surname = surname;
+        this.mail = mail;
+        this.age = age;
+        this.listObjetos = new ArrayList<>();
+    }
+
+    public User(String username, String password, String name, String surname, String mail, int age, List<ObjTO> listObjetos, int enemigosmatados, int minutostotales, int monedasconseguidas, int partidasjugadas) {
         this.username = username;
         this.password = password;
         this.name = name;
@@ -43,7 +55,7 @@ public class User {
         this.surname = surname;
         this.mail = mail;
         this.age = age;
-        this.listObjetos = new ArrayList<Obj>();
+        this.listObjetos = new ArrayList<ObjTO>();
         this.enemigosmatados = enemigosmatados;
         this.minutostotales = minutostotales;
         this.monedasconseguidas = monedasconseguidas;
@@ -54,14 +66,14 @@ public class User {
     {
         this.username = username;
         this.password = password;
-        this.listObjetos = new ArrayList<Obj>();
+        this.listObjetos = new ArrayList<ObjTO>();
 
     }
-    public List<Obj> getListObjetos() {
+    public List<ObjTO> getListObjetos() {
         return listObjetos;
     }
 
-    public void setListObjetos(List<Obj> listObjetos) {
+    public void setListObjetos(List<ObjTO> listObjetos) {
         this.listObjetos = listObjetos;
     }
 
@@ -145,9 +157,9 @@ public class User {
         this.age = age;
     }
 
-    public void addObject (Obj obj)
+    public void addObject (ObjTO objTO)
     {
-        this.listObjetos.add(obj);
+        this.listObjetos.add(objTO);
     }
     public int size ()
     {

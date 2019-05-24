@@ -1,16 +1,17 @@
 package edu.upc.dsa;
 
 import edu.upc.dsa.models.*;
+import edu.upc.dsa.models.Exceptions.*;
+import edu.upc.dsa.models.Users.*;
 import org.apache.log4j.Logger;
 
-import java.lang.Object;
 import java.util.HashMap;
 
 public class MockAPIImpl implements MockAPI {
     private static MockAPI instance;
 
     HashMap<String, User> userHashMap;
-    HashMap<String, Obj> objectHashMap;
+    HashMap<String, ObjTO> objectHashMap;
 
     final static Logger logger = Logger.getLogger(MockAPIImpl.class);
 
@@ -44,21 +45,25 @@ public class MockAPIImpl implements MockAPI {
     }
 
     @Override
-    public UserLogin addUserLogin(String username, String password) throws ExistantUserException {
-        User u = this.userHashMap.get(username);
-        if(u!=null) throw new ExistantUserException();
-        u = new User(username,password);
-        this.userHashMap.put(username,u);
-        logger.info("New user: "+u.toString());
-        UserLogin userLogin = this.passUserToUserLogin(u);
-        return userLogin;
-    }
+    public UserInventary getInventary(String username) throws UserNotFoundException {
+        User user = this.userHashMap.get(username);
+        if(user==null) throw new UserNotFoundException();
+        UserInventary userInventary = this.passUserToUserInvetary(user);
+        return userInventary;    }
 
     @Override
-    public User addUser(String username, String password, String name, String surname, String mail, int age, int enemigos, int monedas, int minutos, int partidas) throws ExistantUserException {
+    public UserStatistics getStatistics(String username) throws UserNotFoundException {
+        User user = this.userHashMap.get(username);
+        if(user==null) throw new UserNotFoundException();
+        logger.info("Logged in: "+user.toString());
+        UserStatistics userStatistics = this.passUserToUserStatistics(user);
+        return userStatistics;        }
+
+    @Override
+    public User addUser(String username, String password, String name, String surname, String mail, int age) throws ExistantUserException {
         User u = this.userHashMap.get(username);
         if(u!=null) throw new ExistantUserException();
-        u = new User(username,password, name,surname,mail,age,enemigos,minutos,monedas,partidas);
+        u = new User(username,password, name,surname,mail,age);
         this.userHashMap.put(username,u);
         logger.info("New user: "+u.toString());
         return u;       }
@@ -70,19 +75,19 @@ public class MockAPIImpl implements MockAPI {
         if(!password.equals(user.getPassword())) throw new PasswordNotMatchException();
         logger.info("Logged in: "+user.toString());
         UserLogin userLogin = this.passUserToUserLogin(user);
-        return userLogin;    }
+        return userLogin;
+    }
 
     @Override
-    public User getUser(String username, String password) throws UserNotFoundException, PasswordNotMatchException {
+    public User getUser(String username, String password) throws UserNotFoundException {
         User u = this.userHashMap.get(username);
         if(u==null) throw new UserNotFoundException();
-        if(!password.equals(u.getPassword())) throw new PasswordNotMatchException();
         return u;
     }
 
     @Override
     public void buyObject(String name, String username) throws ObjectNotExist, UserNotFoundException {
-        Obj object = this.objectHashMap.get(name);
+        ObjTO object = this.objectHashMap.get(name);
         if (object==null)  throw new ObjectNotExist();
         logger.info("Objecto: " + object.toString());
         User user = this.userHashMap.get(username);
@@ -90,14 +95,13 @@ public class MockAPIImpl implements MockAPI {
         logger.info("User: "+ user.toString());
         user.addObject(object);
         logger.info("Objeto añadido: " + object.toString());
-
     }
 
     @Override
     public void addObjectStore(String name) throws ObjectExist {
-        Obj obj = this.objectHashMap.get(name);
-        if(obj==null) {
-            Obj obje = new Obj(name);
+        ObjTO objTO = this.objectHashMap.get(name);
+        if(objTO ==null) {
+            ObjTO obje = new ObjTO(name);
             this.objectHashMap.put(obje.getNombre(),obje);
             logger.info("Objeto añadido a la store: " + obje.toString());
         }
@@ -120,5 +124,17 @@ public class MockAPIImpl implements MockAPI {
     public UserProfile passUserToUserProfile(User user) {
         UserProfile userProfile= new UserProfile(user.getUsername(),user.getPassword(),user.getName(),user.getSurname(),user.getMail(),user.getAge());
         return userProfile;
+    }
+
+    @Override
+    public UserStatistics passUserToUserStatistics(User user) {
+        UserStatistics userStatistics = new UserStatistics(user.getEnemigosmatados(),user.getMinutostotales(),user.getMonedasconseguidas(),user.getPartidasjugadas());
+        return userStatistics;
+    }
+
+    @Override
+    public UserInventary passUserToUserInvetary(User user) {
+        UserInventary userInventary = new UserInventary(user.getListObjetos());
+        return userInventary;
     }
 }
