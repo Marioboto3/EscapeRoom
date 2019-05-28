@@ -1,13 +1,13 @@
 package edu.upc.dsa.models;
 
-public class Obj {
+public class ObjTO {
     private String nombre;
 
-    public Obj(String nombre) {
+    public ObjTO(String nombre) {
         this.nombre = nombre;
     }
 
-    public Obj() {
+    public ObjTO() {
     }
 
     public String getNombre() {
@@ -20,7 +20,7 @@ public class Obj {
 
     @Override
     public String toString() {
-        return "Obj{" +
+        return "ObjTO{" +
                 "nombre='" + nombre + '\'' +
                 '}';
     }

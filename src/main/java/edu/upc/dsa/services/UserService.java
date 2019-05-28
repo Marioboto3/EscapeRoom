@@ -34,7 +34,7 @@ public class UserService {
             this.ma.addUser("Mario","Mario","Mario","San","mama",21);
             this.ma.addObjectStore("Katana");
             this.ma.addObjectStore("Pistola");
-            this.ma.buyObject("Katana","Mario");
+            this.ma.buyObject("katana","Carlo");
         }
     }
     @POST
@@ -78,7 +78,7 @@ public class UserService {
             @ApiResponse(code = 201, message = "Successful", response = UserProfile.class),
             @ApiResponse(code = 404, message = "User not found")
     })
-    @Path("/{username}/profile")
+    @Path("/profile/{username}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response profile(@PathParam("username") String username) {
         try{
@@ -94,7 +94,7 @@ public class UserService {
             @ApiResponse(code = 201, message = "Successful", response = UserStatistics.class),
             @ApiResponse(code = 404, message = "User not found")
     })
-    @Path("/{username}/statistics")
+    @Path("/statistics/{username}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response statistics(@PathParam("username") String username) {
         try{
@@ -120,7 +120,6 @@ public class UserService {
             return Response.status(404).build();
         }
     }
-
     @POST
     @ApiOperation(value = "Buy", notes = "asdasd")
     @ApiResponses(value = {
